@@ -1,0 +1,126 @@
+extends layout
+block content
+  h1.text-monospace ToDoList
+  fieldset
+    legend.text-justify 할일 목록
+    table.table.table-striped
+        thead.thead-dark
+            tr
+                th 제목
+                th 내용
+                th 마감기한
+                th 우선순위
+                th 완료여부
+                th 
+                th 
+                th 
+        tbody
+        for job in jobs
+            tr(data-id=job._id)
+            td= job.title
+            td= job.contents
+            td.table-deadline#table-deadline= job.deadline
+            td= job.priority
+            td.table-complete= job.complete == 1 ? '완료' : '미완료'
+            form(action=`/job/${job._id}/complete?_method=PUT` method='post')
+                input(type="hidden" name="_method" value="put")
+                td
+                    button(type='submit').btn.btn-success 완료
+
+                td: button(type='button' value=job).btn.btn-secondary 수정
+            form(action=`/job/${job._id}/?_method=DELETE` method='post')
+                input(type="hidden" name="_method" value="put")
+                td: button(type='submit').btn.btn-danger 삭제
+  fieldset
+    legend 할일 입력
+    table.table.table-striped
+        thead
+            tr
+                th 제목
+                th 내용
+                th 마감기한
+                th 우선순위
+        tbody
+        form(action='/job' method='post')
+            .input-group.input-group-sm.mb-3
+            tr#input-id
+                td 
+                    input#input-title(name='title' placeholder='제목' )
+                td 
+                    input#input-contents(name='contents' placeholder='내용')
+                td 
+                    input#input-date(name='deadline' type='date' placeholder='데드라인')
+                td 
+                    input#input-priority(name='priority' placeholder='우선순위' value=0)
+                td 
+                    button(type='submit') 작성하기
+                td 
+                    button#modify-submit(type='button' style='visibility: hidden') 수정하기
+
+  .error-message= error
+  script.
+
+
+    document.getElementById('input-date').value = new Date().toISOString().substring(0, 10);
+    document.querySelectorAll('.table-deadline').forEach(function (t) {
+        var deadline = t.innerHTML;
+        var currentdate = new Date();
+        if(Date.parse(deadline) - currentdate.getTime() > 0){
+            t.innerHTML = new Date(deadline).toISOString().substring(0,10);
+            t.style.color = 'blue';
+            t.value = 1;
+           
+        }
+        else{
+            t.innerHTML = new Date(deadline).toISOString().substring(0,10);
+            t.style.cssText = "text-decoration: line-through";
+        }
+    });
+            document.querySelectorAll('.table-complete').forEach(function (complete){
+                if(complete.innerHTML == "미완료" ){
+                    complete.style.color = 'red';
+                    
+                }
+            });
+
+    document.querySelectorAll('.btn.btn-secondary').forEach(function (btn) {
+        btn.addEventListener('click', (e) => {
+            document.getElementById('modify-submit').style.visibility = "visible";
+
+            var job = JSON.parse(e.target.value);
+            document.getElementById('input-title').value = job.title;
+            document.getElementById('input-contents').value = job.contents;
+            document.getElementById('input-date').value = new Date(job.deadline).toISOString().substring(0, 10);
+            document.getElementById('input-priority').value = job.priority;
+            
+            document.querySelector('#modify-submit').addEventListener('click', function (e) {
+                var formData = new FormData();
+                var xhr = new XMLHttpRequest();
+                var contents = document.getElementById('input-title').value;
+                var dat = document.getElementById('input-title').value;
+                var title = document.getElementById('input-title').value;
+                xhr.onreadystatechange = alertContents;
+                xhr.open('PUT', `/job/${job._id}`);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({ 
+                    title : document.getElementById('input-title').value,
+                    contents : document.getElementById('input-contents').value,
+                    deadline : document.getElementById('input-date').value,
+                    priority : document.getElementById('input-priority').value,
+                }));
+            function alertContents(){
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                  if (xhr.status === 200) {
+                    alert(xhr.responseText);
+                  } else {
+                    alert(xhr.responseText);
+                    
+                  }
+                }
+            }
+                location.href = '/list'
+
+            });
+
+        });
+    });
