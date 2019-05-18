@@ -5,7 +5,7 @@
 1. sudo apt-get install git  
    git clone https://github.com/lenon461/Todolist  
    cd Todolist  
-   sh schript.sh  
+   sh script.sh  
 
 2. npm i  
 
