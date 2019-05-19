@@ -1,10 +1,15 @@
-## 접속 및 테스트 URL
+> ## 접속 및 테스트 URL 
+> #### [Todolist](http://34.97.42.76:8016/list)  
     http://34.97.42.76:8016/list
 
-## Swagger API
+
+> ## Swagger API
+> #### [Todolist-api](http://34.97.42.76:8016/api-docs)
     http://34.97.42.76:8016/api-docs
 
-## 설치 및 빌드 방법
+
+## 설치 및 빌드 방법 
+---
 
 1. 필수 구성요소 설치
 
@@ -19,7 +24,7 @@ $ sh schript.sh
 $ npm i  
 ~~~
 
-3. 데이터베이스 실행
+2. 데이터베이스 실행
 ~~~
 $ mongo
 > use admin  
@@ -27,13 +32,13 @@ $ mongo
 > exit
 ~~~
 
-4. < .env > 파일 작성
-~~~
+3. < .env > 파일 작성
+~~~ 
 MONGO_ID=root
 MONGO_PASSWORD=root
 ~~~
 
-5. 서버 시작 및 접속
+4. 서버 시작 및 접속
 ~~~
 $ npm start  
 
