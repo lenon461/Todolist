@@ -1,6 +1,35 @@
 extends layout
 
 block form
-  h1= test
-  
-
+    h2 TODOlist login page
+    .container
+      .profile-wrap
+        .profile
+          if user
+            .user-name= '안녕하세요! ' + user.nick + '님'
+            .half
+              div 팔로잉
+              .count.following-count= user.Followings && user.Followings.length || 0
+            .half
+              div 팔로워
+              .count.follower-count= user.Followers && user.Followers.length || 0
+            input#my-id(type='hidden' value=user.id)
+            a#profile.btn.btn-outline-primary(href='/profile') 내 프로필
+            a#logout.btn.btn-outline-primary(href='/auth/logout') 로그아웃
+          else
+            form.form-group#login-form(action='/auth/login' method='post')
+              .input-group-text
+                label(for='email') 이메일
+                input.form-control#email(type='email' name='email' required autofocus)
+              .input-group-text
+                label(for='password') 비밀번호
+                input.form-control#password(type='password' name='password' required)
+              if loginError
+                .error-message= loginError
+              a#join.btn.btn-outline-primary(href='/join') 회원가입
+              button#login.btn.btn-outline-primary(type='submit') 로그인
+              a#kakao.btn.btn-outline-primary(href='/auth/kakao') 카카오톡
+        footer
+          | Made by&nbsp;
+          a(href='https://www.zerocho.com' target='_blank') ZeroCho
+      block content

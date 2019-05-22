@@ -5,12 +5,16 @@ const Job = require('../schemas/job');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Expxxress' });
+  res.render('form', { title: 'Expxxress' });
+});
+router.get('/join', function(req, res, next) {
+  res.render('join', { title: '회원가입' , user: req.user, joinError: req.flash('joinError'),
+  });
 });
 router.get('/list', async (req, res, next) => {
     try{
         const jobs = await Job.find({}).sort({'deadline':1, 'priority':-1});
-        res.render('main', {jobs,  title: 'Expxxress' });
+        res.render('main', {jobs, user: req.user, title: 'Expxxress' });
     } catch (error){
         console.error(error);
         next(error);
