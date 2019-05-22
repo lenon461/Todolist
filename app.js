@@ -8,6 +8,7 @@ const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggeryaml = yaml.load('./swagger/swagger.yaml');
 const methodOverride = require('method-override');
+const passport = require('passport');
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
