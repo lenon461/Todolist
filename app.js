@@ -9,12 +9,18 @@ const swaggerUi = require('swagger-ui-express');
 const swaggeryaml = yaml.load('./swagger/swagger.yaml');
 const methodOverride = require('method-override');
 const passport = require('passport');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
+const authRouter = require('./routes/auth');
+
 const connect = require('./schemas');
+const passportConfig = require('./passport');
 
 const app = express();
+passportConfig(passport);
 connect();
 
 // view engine setup
@@ -30,9 +36,19 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggeryaml));
 app.use(methodOverride('_method'));
+app.use(session({
+    resave: false,
+    saveUninitialized: false,
+    secret: "@DF@D@D@D!D!D"
+}));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
+app.use('/auth', authRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

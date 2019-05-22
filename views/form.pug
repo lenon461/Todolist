@@ -1,6 +1,26 @@
 extends layout
 
 block form
-  h1= test
-  
-
+    h2.text-monospace WELCOME TO THE TODOLIST
+    .container
+      .profile-wrap
+        .profile
+          if user
+            .text-monospace= '안녕하세요! ' + user.nickname + '님'
+            input#my-id(type='hidden' value=user.id)
+            a#profile.btn.btn-outline-primary(href='/profile') 내 프로필
+            a#logout.btn.btn-outline-primary(href='/auth/logout') 로그아웃
+          else
+            form.form-group#login-form(action='/auth/login' method='post')
+              .input-group-text
+                label(for='email') 이메일
+                input.form-control#email(type='email' name='email' required autofocus)
+              .input-group-text
+                label(for='password') 비밀번호
+                input.form-control#password(type='password' name='password' required)
+              if loginError
+                .error-message= loginError
+              a#join.btn.btn-outline-primary(href='/join') 회원가입
+              button#login.btn.btn-outline-primary(type='submit') 로그인
+              a#kakao.btn.btn-outline-primary(href='/auth/kakao') 카카오톡
+      block content
