@@ -6,7 +6,8 @@ const Job = require('../schemas/job');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('form', { user: req.user, title: 'Expxxress' });
+    console.log(req.user);
+  res.render('form', { user: req.user, loginError: req.flash('loginError') });
 });
 router.get('/join', function(req, res, next) {
   res.render('join', { title: '회원가입' , user: req.user, joinError: req.flash('joinError'),

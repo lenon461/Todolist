@@ -8,13 +8,13 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
+        required: true,
     },
     nickname: {
         type: String,
     },
     snsid: {
-        type: Boolean,
-        default: 0,
+        type: String,
     },
     createdAt: {
         type: Date,
