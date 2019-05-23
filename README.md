@@ -38,6 +38,7 @@ $ mongo
 ~~~ 
 MONGO_ID=root
 MONGO_PASSWORD=root
+KAKAO_ID=<MYKAKAOAPIID>
 ~~~
 
 4. 서버 시작 및 접속
