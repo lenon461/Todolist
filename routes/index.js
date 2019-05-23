@@ -15,7 +15,7 @@ router.get('/join', function(req, res, next) {
 });
 router.get('/list', isLoggedIn, async (req, res, next) => {
     try{
-        const jobs = await Job.find({}).sort({'deadline':1, 'priority':-1});
+        const jobs = await Job.find({user:req.user._id}).sort({'deadline':1, 'priority':-1});
         res.render('main', {jobs, user: req.user, title: 'Expxxress' });
     } catch (error){
         console.error(error);
@@ -29,6 +29,7 @@ router.post('/job', async(req, res, next) => {
             res.status(400).send("제목과 내용을 입력하세요");
         }
         const job = new Job({
+            user: req.user._id,
             title: req.body.title,
             contents: req.body.contents,
             deadline: req.body.deadline,
